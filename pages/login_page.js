@@ -8,7 +8,7 @@ export default function LoginPage({ navigation }) {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [kullanicidata, setKullaniciData] = useState([])
-
+    
     const buttonclick = async () => {
         setLoading(!loading)
         await fetch('https://6249f9b1852fe6ebf882de48.mockapi.io/api/v1/kullanici', {
@@ -27,6 +27,9 @@ export default function LoginPage({ navigation }) {
            if(kullanicidata.some(element => element.username == text && element.password == password)){
                const kullanici = kullanicidata.find(e => e.username == text)
                console.log(kullanici);
+               setLoading(false);
+               setPassword("");
+               setText("");
             Alert.alert(
                 "Hoşgeldin "+ kullanici.name,
                 "Ana Sayfaya Yönlendiriliyorsun",
@@ -44,10 +47,12 @@ export default function LoginPage({ navigation }) {
            }
     }
     return (
-        <View style={{ marginTop: StatusBar.currentHeight, height: hp('100%'), backgroundColor: 'white', borderColor: 'red', borderWidth: 3 }}>
-           <View style={{height:hp('25%'),borderColor:'green',borderWidth:3}}></View>
-            <View style={{ height: hp('50%'), borderColor: 'red', borderWidth: 3, justifyContent: 'space-evenly' }}>
-                <View style={{ borderColor: 'green', borderWidth: 3,alignItems:'center' }}>
+       
+        <View style={{ marginTop: StatusBar.currentHeight, height: hp('100%'), backgroundColor: 'white' }}>
+          <ImageBackground source={require("../assets/back.png")} resizeMode="stretch" style={{height:hp('102%')}}>
+           <View style={{height:hp('25%')}}></View>
+            <View style={{ height: hp('50%'), justifyContent: 'space-evenly' }}>
+                <View style={{alignItems:'center' }}>
                     <TextInput
                         style={{ width: wp('80%') }}
                         label="Kullanıcı Adı"
@@ -68,11 +73,13 @@ export default function LoginPage({ navigation }) {
                 <Button style={{width:wp('80%'),alignSelf:'center'}} loading={loading} mode="contained" onPress={() => buttonclick()}>
                     Giriş Yap
                 </Button>
-                <Text onPress={()=> console.log("text")} style={{ textAlign: 'center' }}>Henüz Hesabın Yok mu ? Üye ol !</Text>
+                <Text onPress={()=> navigation.navigate('Details')} style={{ borderRadius:20,alignSelf:'center',width:wp('60%'),textAlign: 'center',fontFamily:'CoveredByYourGrace_400Regular',color:'white',backgroundColor:'purple' }}>Henüz Hesabın Yok mu ? Üye ol !</Text>
             </View>
-            <View style={{height:hp('25%'),borderColor:'red',borderWidth:3}}>
+            <View style={{height:hp('25%')}}>
 
             </View>
+            </ImageBackground>
         </View>
+      
     )
 }
