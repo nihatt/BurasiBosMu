@@ -29,7 +29,7 @@ export default function BigCard(props) {
     color={Colors.green500}
     size={30}
     onPress={() =>  {
-        Linking.canOpenURL(props.telefonurl).then(supported => {
+        Linking.canOpenURL(props.url).then(supported => {
           if (supported) {
             Linking.openURL(props.url);
           } else {

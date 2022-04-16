@@ -4,17 +4,17 @@ import { Searchbar, IconButton } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import BigCard from "../components/big_card";
 import SmallCard from "../components/small_card";
-import { 
+import {
     useFonts,
     Coustard_400Regular,
-    Coustard_900Black 
-  } from '@expo-google-fonts/coustard'
+    Coustard_900Black
+} from '@expo-google-fonts/coustard'
 
-  import { 
-    CoveredByYourGrace_400Regular 
-  } from '@expo-google-fonts/covered-by-your-grace'
+import {
+    CoveredByYourGrace_400Regular
+} from '@expo-google-fonts/covered-by-your-grace'
 
-  import { 
+import {
     Exo2_100Thin,
     Exo2_100Thin_Italic,
     Exo2_200ExtraLight,
@@ -32,8 +32,8 @@ import {
     Exo2_800ExtraBold,
     Exo2_800ExtraBold_Italic,
     Exo2_900Black,
-    Exo2_900Black_Italic 
-  } from '@expo-google-fonts/exo-2'
+    Exo2_900Black_Italic
+} from '@expo-google-fonts/exo-2'
 
 
 export default function MainPage(props) {
@@ -58,23 +58,65 @@ export default function MainPage(props) {
         Exo2_800ExtraBold,
         Exo2_800ExtraBold_Italic,
         Exo2_900Black,
-        Exo2_900Black_Italic 
+        Exo2_900Black_Italic
 
-      });
+    });
 
+    const [refreshing, setRefreshing] = useState(false);
+    const [refreshing2, setRefreshing2] = useState(false);
+  
+    const onRefresh = useCallback(async () => {
+      setRefreshing(true);
+      if (temporaryData.length < 20) {
+        try {
+          let response = await fetch(
+            'https://6249f9b1852fe6ebf882de48.mockapi.io/api/v1/kafeler',
+          );
+          let responseJson = await response.json();
+          console.log(responseJson);
+          setTemporaryData(responseJson);
+          setRefreshing(false)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      else{
+        Alert.alert("Error Try Again");
+        setRefreshing(false)
+      }
+    }, [refreshing]);
 
-
+    const onRefresh2 = useCallback(async () => {
+        setRefreshing2(true);
+        if (temporaryData.length < 20) {
+          try {
+            let response = await fetch(
+              'https://6249f9b1852fe6ebf882de48.mockapi.io/api/v1/kafeler',
+            );
+            let responseJson = await response.json();
+            console.log(responseJson);
+            setTemporaryData(responseJson);
+            setRefreshing2(false)
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        else{
+          Alert.alert("Error Try Again");
+          setRefreshing(false)
+        }
+      }, [refreshing]);
 
     const arkaplansec = (sayi) => {
         console.log(sayi);
-        if(sayi<5 && sayi>0){
+        if (sayi < 5 && sayi >= 0) {
             return "green"
         }
-        else if (sayi>5 && sayi<=8){
+        else if (sayi > 5 && sayi <= 8) {
             return "orange"
         }
-        else 
-        return "red"
+        else
+            return "red"
     }
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryData, setCategoryData] = useState([]);
@@ -115,6 +157,8 @@ export default function MainPage(props) {
 
     }
 
+
+
     // if(searchQuery.length != 0){
     //     return <ActivityIndicator size="large" color='red' style={{
     //         flex: 1,
@@ -124,40 +168,44 @@ export default function MainPage(props) {
 
 
     return (
-        <View style={{  marginTop: StatusBar.currentHeight, height: hp('100%'),backgroundColor:'white' }}>
-            <View style={{ height: hp('12%'),  justifyContent: 'center' }}>
+        <View style={{ marginTop: StatusBar.currentHeight, height: hp('100%'), backgroundColor: 'white' }}>
+            <View style={{ height: hp('12%'), justifyContent: 'center' }}>
                 <Searchbar
-                    style={{ borderRadius: 20 ,width:wp('90%'),alignSelf:'center'}}
+                    style={{ borderRadius: 20, width: wp('90%'), alignSelf: 'center' }}
                     placeholder="Cafe Adına Göre Arama "
                     onChangeText={onChangeSearch}
                     value={searchQuery}
                 />
             </View>
             <View style={{ height: hp('8%'), justifyContent: 'center' }}>
-                <Text style={{fontFamily: 'Exo2_900Black',fontSize:20,textAlign:'auto',marginLeft:wp('3%')}}>Konumuna En Yakın Boş Cafeler</Text>
+                <Text style={{ fontFamily: 'Exo2_900Black', fontSize: 20, textAlign: 'auto', marginLeft: wp('3%') }}>Konumuna En Yakın Boş Cafeler</Text>
             </View>
-            <View style={{ height: hp('18%'),flexDirection: 'row' }}>
+            <View style={{ height: hp('18%'), flexDirection: 'row' }}>
                 <FlatList horizontal={true}
-                    data={categoryData}
-                    renderItem={({ item }) => <SmallCard arkarenk={arkaplansec(item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%"+item.kafebosmasasayisi*10}></SmallCard>}
-                    keyExtractor={item => item.id}
-                />
-            </View>
-            <View style={{height: hp('53%'),marginTop:hp('3%')}}>
-            <View style={{ height: hp('8%'),  justifyContent: 'center' }}>
-                <Text  style={{fontFamily: 'Exo2_900Black',fontSize:20,marginLeft:wp('3%')}}>En çok Tercih Edilen Kafeler</Text>
-            </View>
-
-            <View style={{ height: hp('45%'),  justifyContent: 'center' }}>
-            <FlatList horizontal={true}
+                 refreshControl={<RefreshControl refreshing={refreshing2} onRefresh={onRefresh2} />}
                     data={temporaryData.length != 0 ? temporaryData : categoryData}
-                    contentContainerStyle={{    flexGrow: 1,
-                    justifyContent: 'space-around',
-                    alignItems:"center"}}
-                    renderItem={({ item }) => <BigCard url={item.kafelinkkonum}  arkaplanrenk={arkaplansec(item.kafebosmasasayisi)} kafeil={item.kafeil} kafeilce={item.kafeilce} arkarenk={arkaplansec(item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%"+item.kafebosmasasayisi*10}></BigCard>}
+                    renderItem={({ item }) => <SmallCard arkarenk={arkaplansec(10-item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%" + (10-item.kafebosmasasayisi) * 10}></SmallCard>}
                     keyExtractor={item => item.id}
                 />
             </View>
+            <View style={{ height: hp('53%'), marginTop: hp('3%') }}>
+                <View style={{ height: hp('8%'), justifyContent: 'center' }}>
+                    <Text style={{ fontFamily: 'Exo2_900Black', fontSize: 20, marginLeft: wp('3%') }}>En çok Tercih Edilen Kafeler</Text>
+                </View>
+
+                <View style={{ height: hp('45%'), justifyContent: 'center' }}>
+                    <FlatList horizontal={true}
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                        data={temporaryData.length != 0 ? temporaryData : categoryData}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            justifyContent: 'space-around',
+                            alignItems: "center"
+                        }}
+                        renderItem={({ item }) => <BigCard url={item.kafetelefon} kafekonumurl={item.kafelinkkonum} yorumurl={item.kafelinkyorum} arkaplanrenk={arkaplansec(10-item.kafebosmasasayisi)} kafeil={item.kafeil} kafeilce={item.kafeilce} arkarenk={arkaplansec(item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%" + (10-item.kafebosmasasayisi) * 10}></BigCard>}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
             </View>
         </View>
     )

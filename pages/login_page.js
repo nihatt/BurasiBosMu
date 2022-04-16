@@ -66,7 +66,9 @@ export default function LoginPage({ navigation }) {
        
         <View style={{ marginTop: StatusBar.currentHeight, height: hp('100%'), backgroundColor: 'white' }}>
           <ImageBackground source={require("../assets/back.png")} resizeMode="stretch" style={{height:hp('102%')}}>
-           <View style={{height:hp('25%')}}></View>
+           <View style={{height:hp('25%'),alignItems:'center',paddingTop:hp('4%')}}>
+               <Image source={{uri:"https://i.hizliresim.com/9uak3jf.png"}} style={{height:hp('25%'),width:wp('80%'),alignSelf:'center'}} />
+           </View>
             <View style={{ height: hp('50%'), justifyContent: 'space-evenly' }}>
                 <View style={{alignItems:'center' }}>
                     <TextInput
