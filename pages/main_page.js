@@ -154,7 +154,7 @@ export default function MainPage(props) {
                     contentContainerStyle={{    flexGrow: 1,
                     justifyContent: 'space-around',
                     alignItems:"center"}}
-                    renderItem={({ item }) => <BigCard arkaplanrenk={arkaplansec(item.kafebosmasasayisi)} kafeil={item.kafeil} kafeilce={item.kafeilce} arkarenk={arkaplansec(item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%"+item.kafebosmasasayisi*10}></BigCard>}
+                    renderItem={({ item }) => <BigCard url={item.kafelinkkonum}  arkaplanrenk={arkaplansec(item.kafebosmasasayisi)} kafeil={item.kafeil} kafeilce={item.kafeilce} arkarenk={arkaplansec(item.kafebosmasasayisi)} resim={item.kaferesim} kafeadi={item.kafename} dolulukorani={"%"+item.kafebosmasasayisi*10}></BigCard>}
                     keyExtractor={item => item.id}
                 />
             </View>

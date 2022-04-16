@@ -6,10 +6,11 @@ import { TextInput } from 'react-native-paper';
 export default function LoginPage({ navigation }) {
     const [text, setText] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [kullanicidata, setKullaniciData] = useState([])
     
-    const buttonclick = async () => {
+
+    const getData = async() => {
         setLoading(!loading)
         await fetch('https://6249f9b1852fe6ebf882de48.mockapi.io/api/v1/kullanici', {
             method: 'GET',
@@ -24,6 +25,11 @@ export default function LoginPage({ navigation }) {
                 console.log(data2);
             })
             .catch(err => console.error(err));
+    }
+
+
+    const buttonclick = async () => {
+       
            if(kullanicidata.some(element => element.username == text && element.password == password)){
                const kullanici = kullanicidata.find(e => e.username == text)
                console.log(kullanici);
@@ -45,6 +51,16 @@ export default function LoginPage({ navigation }) {
               );
               setLoading(false)
            }
+    }
+
+    if (loading) {
+        console.log("girdi");
+        getData();
+        return <ActivityIndicator size="large" color='red' style={{
+            flex: 1,
+            justifyContent: "center"
+        }} />;
+
     }
     return (
        
@@ -73,7 +89,7 @@ export default function LoginPage({ navigation }) {
                 <Button style={{width:wp('80%'),alignSelf:'center'}} loading={loading} mode="contained" onPress={() => buttonclick()}>
                     Giriş Yap
                 </Button>
-                <Text onPress={()=> navigation.navigate('Details')} style={{ borderRadius:20,alignSelf:'center',width:wp('60%'),textAlign: 'center',fontFamily:'CoveredByYourGrace_400Regular',color:'white',backgroundColor:'purple' }}>Henüz Hesabın Yok mu ? Üye ol !</Text>
+                <Text onPress={()=> navigation.navigate('Details')} style={{ borderRadius:20,alignSelf:'center',width:wp('60%'),textAlign: 'center',color:'white',backgroundColor:'purple' }}>Henüz Hesabın Yok mu ? Üye ol !</Text>
             </View>
             <View style={{height:hp('25%')}}>
 

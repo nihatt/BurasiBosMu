@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ImageBackground, FlatList, ActivityIndicator, Alert, Image, RefreshControl, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ImageBackground,Linking, FlatList, ActivityIndicator, Alert, Image, RefreshControl, StatusBar, Dimensions } from 'react-native';
 import { Searchbar, IconButton,Colors } from 'react-native-paper';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -23,24 +23,48 @@ export default function BigCard(props) {
                         <Text style={{ fontFamily: 'Exo2_600SemiBold_Italic', color: 'white', backgroundColor: props.arkaplanrenk, borderRadius: 30, width: wp('20%'), textAlign: 'center', justifyContent: 'center', alignItems: 'center', textAlignVertical: 'center' }}>{props.dolulukorani}</Text>
                     </View>
                     <View style={{height:hp('20%'),justifyContent:'space-evenly'}}>
-                    <View style={{ flexDirection:'row',alignSelf:'center',width: wp('50%'), height:hp('6%'), borderColor: 'red', borderWidth: 3 }}>
+                    <View style={{ flexDirection:'row',alignSelf:'center',width: wp('50%'), height:hp('8%'),justifyContent:'center' }}>
                     <IconButton
-    icon="camera"
-    color={Colors.red500}
+    icon="whatsapp"
+    color={Colors.green500}
     size={30}
-    onPress={() => console.log('Pressed')}
+    onPress={() =>  {
+        Linking.canOpenURL(props.telefonurl).then(supported => {
+          if (supported) {
+            Linking.openURL(props.url);
+          } else {
+            console.log("Linkte hata var gibi duruyor , server tarafına sorun iletildi. " + props.url);
+          }
+        });
+      }}
   />
     <IconButton
-    icon="camera"
-    color={Colors.red500}
+    icon="comment-search-outline"
+    color={Colors.white}
     size={30}
-    onPress={() => console.log('Pressed')}
+    onPress={() =>  {
+        Linking.canOpenURL(props.yorumurl).then(supported => {
+          if (supported) {
+            Linking.openURL(props.yorumurl);
+          } else {
+            console.log("Linkte hata var gibi duruyor , server tarafına sorun iletildi. " + props.yorumurl);
+          }
+        });
+      }}
   />
     <IconButton
-    icon="camera"
-    color={Colors.red500}
+    icon="map-marker-circle"
+    color={Colors.yellow400}
     size={30}
-    onPress={() => console.log('Pressed')}
+    onPress={() =>  {
+        Linking.canOpenURL(props.kafekonumurl).then(supported => {
+          if (supported) {
+            Linking.openURL(props.kafekonumurl);
+          } else {
+            console.log("Linkte hata var gibi duruyor , server tarafına sorun iletildi. " + props.kafekonumurl);
+          }
+        });
+      }}
   />
                     </View>
                     <View style={{ backgroundColor: 'grey', height: hp('6%'),width: wp('60%'), borderRadius: 50, justifyContent: 'space-evenly', alignItems: 'center' }}>

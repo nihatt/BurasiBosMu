@@ -126,7 +126,7 @@ export default function DetailsPage({ navigation }) {
                     <Button style={{ width: wp('80%'), alignSelf: 'center' }} loading={loading} mode="contained" onPress={() => buttonclick()}>
                         Üye ol 
                     </Button>
-                    <Text onPress={() => navigation.navigate('Login')} style={{ borderRadius: 20, alignSelf: 'center', width: wp('60%'), textAlign: 'center', fontFamily: 'CoveredByYourGrace_400Regular', color: 'white', backgroundColor: 'purple' }}>Zaten Hesabın Var mı ? Giriş Yap</Text>
+                    <Text onPress={() => navigation.navigate('Login')} style={{ borderRadius: 20, alignSelf: 'center', width: wp('60%'), textAlign: 'center', color: 'white', backgroundColor: 'purple' }}>Zaten Hesabın Var mı ? Giriş Yap</Text>
                 </View>
                 <View style={{ height: hp('25%') }}>
 
